@@ -30,11 +30,9 @@ let actions = {
   // 登录action  data是需要传入的参数对象 mobile password
   async login(context, data) {
     // 调用api登录接口
-    let {result} = await login(data)
-    if(result.success){
-      // 如果结果为true，表示登录成功
-      context.commit('setToken',result.data)
-    }
+    let result = await login(data)  //获取token
+    context.commit('setToken', result) //设置token
+
   }
 
 }

@@ -66,7 +66,8 @@
 
 <script>
 import { validMobile } from '@/utils/validate'
-
+// 引入vuex的辅助函数
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   data() {
@@ -74,7 +75,7 @@ export default {
       // value 要检验的值
       // 校验成功 callback()
       // 校验失败 callback(new Error())
-      validMobile(value) ? callback():callback(new Error('手机号格式不正确'))
+      validMobile(value) ? callback() : callback(new Error('手机号格式不正确'))
     }
 
     return {
@@ -92,11 +93,11 @@ export default {
           }
         ],
         password: [
-          { required: true, trigger: 'blur',message:'密码不能为空' },
-          { trigger: 'blur',min:6,max:16,message:'密码是6-16位'}
+          { required: true, trigger: 'blur', message: '密码不能为空' },
+          { trigger: 'blur', min: 6, max: 16, message: '密码是6-16位' }
         ]
       },
-      loading: false,
+      loading: false, //加载转圈
       passwordType: 'password',
       redirect: undefined
     }
@@ -110,6 +111,10 @@ export default {
     }
   },
   methods: {
+    // 直接引入模块action
+    ...mapActions(['user/login']),
+
+    // 查看密码方法
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -120,22 +125,29 @@ export default {
         this.$refs.password.focus()
       })
     },
+    // 登录方法
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
+      /**
+       * ref 可以获取一个元素的dom对象
+       * ref作用到组件上的时候，可以获取该组件的实例 即 this
+       */
+
+      // 表单的手动校验 validate是element-ui 对整个表单校验的方法
+      this.$refs.loginForm.validate(async isOk => {
+        try {
           this.loading = true
-          this.$store
-            .dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
-        } else {
-          console.log('error submit!!')
-          return false
+          // 只有整个表单校验成功,才去调用action
+          await this['user/login'](this.loginForm)
+          // login 是异步请求 这里需要强制等待 使用await
+          // 执行成功后，才执行await后面的代码
+
+          // 执行成功后跳转页面
+          this.$router.push('/')
+        } catch (error) {
+          // console.log(error);
+        } finally {
+          // 不管是执行成功或者失败，都要关闭转圈
+          this.loading = false
         }
       })
     }
