@@ -5,6 +5,8 @@ import store from '@/store'  //引入store实例  和组件中的this.$store是�
 import nprogress from 'nprogress' //引入进度条
 import 'nprogress/nprogress.css'
 
+// 不需要导出  在main.js已经导入了permission.js  只需要让代码执行即可
+
 // 定义白名单
 let whiteList = ['/login', '/404']
 
