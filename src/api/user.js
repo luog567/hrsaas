@@ -12,8 +12,14 @@ export function login(data) {
     })
 }
 
-export function getInfo(token) {
-
+/**
+ * 获取用户基本资料
+ */
+export let getUserInfo = () => {
+    return request({
+        url:'/sys/profile',
+        method:'post'
+    })
 }
 
 export function logout() {
