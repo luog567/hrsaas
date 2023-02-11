@@ -1,5 +1,5 @@
 import axios from 'axios'
-import store from 'store'
+import store from '@/store'
 import { Message } from 'element-ui'
 
 // 创建axios实例
@@ -13,8 +13,9 @@ let service = axios.create({
 service.interceptors.request.use(config => {
     // 请求成功的回调函数
 
-    // 判断是否有token  有token才注入到header中
+    // 在这个位置需要统一的去注入token
     if (store.getters.token) {
+        // 判断是否有token  有token才注入到header中
         config.headers['Authorization'] = `Bearer ${store.getters.token}`
     }
     //必须返回配置

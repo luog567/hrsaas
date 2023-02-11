@@ -22,6 +22,12 @@ export let getUserInfo = () => {
     })
 }
 
-export function logout() {
-
+/**
+ * 获取员工基本信息  现在写它 完全是为了获取显示头像
+ * axios 默认的请求方法是get
+ */
+export let getUserDetailById = (id)=>{
+    return request({
+        url:`/sys/user/${id}`
+    })
 }
