@@ -1,4 +1,4 @@
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 
 // 状态
@@ -43,6 +43,8 @@ let actions = {
     // 调用api登录接口
     let result = await login(data)  //获取token
     context.commit('setToken', result) //设置token
+    // 写入时间戳
+    setTimeStamp() // 将当前的最新时间写入缓存
   },
 
   // 获取用户信息action
@@ -58,6 +60,14 @@ let actions = {
     context.commit('setUserInfo', baseResult)
     // 这里为什么要return ？ 这是为后面做权限时  埋下伏笔
     return result
+  },
+
+  // 登出action   登出里面的代码都是同步代码
+  logout(context) {
+    // 删除token
+    context.commit('removeToken')
+    // 删除用户信息
+    context.commit('removeUserInfo')
   }
 
 }

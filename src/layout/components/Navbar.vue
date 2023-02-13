@@ -48,6 +48,7 @@ export default {
   },
   data(){
     return {
+      // 为了不让路径发生问题 使用require包一下
       defaultImg:require('@/assets/common/head.jpg')
     }
   },
@@ -59,8 +60,8 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      await this.$store.dispatch('user/logout') //这里写不写 await 都是同步代码
+      this.$router.push(`/login`) //跳到登录页
     }
   }
 }
