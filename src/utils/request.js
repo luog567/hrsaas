@@ -64,8 +64,15 @@ service.interceptors.response.use(response => {
 }, error => {
     // 响应失败的回调函数
 
-    // 提示错误信息
-    Message.error(error.message)
+    // error信息里面有response的对象
+    if (error.response && error.response.data && error.response.data.code === 10002) {
+        // 当code等于10002,表示后端告诉我token超时了
+        store.dispatch('user/logout') //登出操作  删除token
+        router.push('/login') //跳转到首页
+    } else {
+        // 提示错误信息
+        Message.error(error.message)
+    }
     // 返回执行错误 让当前的执行链跳出成功 直接进入catch
     return Promise.reject(error)
 })
