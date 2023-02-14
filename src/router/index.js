@@ -1,14 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+// 引入多个模块的规则
+import approvalsRouter from './modules/approvals'
+import departmentsRouter from './modules/departments'
+import employeesRouter from './modules/employees'
+import permissionRouter from './modules/permission'
+import attendancesRouter from './modules/attendances'
+import salarysRouter from './modules/salarys'
+import settingRouter from './modules/setting'
+import socialRouter from './modules/social'
 Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
 
-/**
- * 静态路由 所有的人都可以访问
- */
+//  静态路由 所有的人都可以访问
 export const constantRoutes = [
   {
     path: '/login',
@@ -30,7 +36,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
 
@@ -38,12 +44,26 @@ export const constantRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
+// 动态路由
+// 这里导出这个变量，后面做权限时会用到
+export let asyncRouter = [
+  approvalsRouter,
+  departmentsRouter,
+  employeesRouter,
+  permissionRouter,
+  attendancesRouter,
+  salarysRouter,
+  settingRouter,
+  socialRouter
+]
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  // 临时合并所有的路由
+  routes: [...constantRoutes, ...asyncRouter]
 })
 
+// 实例化路由
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
