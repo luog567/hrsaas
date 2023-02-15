@@ -31,6 +31,7 @@ export default {
       'sidebar'
     ]),
     routes() {
+      // 获取当前的路由配置
       return this.$router.options.routes
     },
     activeMenu() {

@@ -1,6 +1,8 @@
 <script>
 export default {
   name: 'MenuItem',
+  // functional: true, 表示函数式组件
+  // 函数式组件：没有data状态，没有响应式数据，只会接收props属性，没有this  他就是一个函数
   functional: true,
   props: {
     icon: {
@@ -12,6 +14,7 @@ export default {
       default: ''
     }
   },
+  // render函数编码 生成模板
   render(h, context) {
     const { icon, title } = context.props
     const vnodes = []
