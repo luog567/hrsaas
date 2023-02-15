@@ -3,7 +3,7 @@
     <div class="app-container">
       <!-- 组织架构内容-头部 -->
       <el-card class="tree-card">
-        <TreeTools :treeNode='company' :isRoot="true"/>
+        <TreeTools :treeNode="company" :isRoot="true" />
         <!-- 放置一个el-tree -->
         <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
           <!-- 传入内容  插槽内容 会循环多次  有多少节点 就循环多少次 -->
@@ -18,6 +18,8 @@
 
 <script>
 import TreeTools from './components/tree-tools'
+import { getDepartment } from '@/api/departments'
+import { tranListToTreeData } from '@/utils'
 export default {
   components: {
     TreeTools
@@ -27,19 +29,21 @@ export default {
       defaultProps: {
         label: 'name'
       },
-      company:{
-        name:'江苏传智播客教育科技股份有限公司',
-        manager:'负责人'
-      },
-      departs: [
-        {
-          name: '总裁办',
-          manager: '曹操',
-          children: [{ name: '董事会', manager: '曹丕' }]
-        },
-        { name: '行政部', manager: '刘备' },
-        { name: '人事部', manager: '孙权' }
-      ]
+      // 头部数据结构
+      company: {},
+      departs: []
+    }
+  },
+  created() {
+    this.getDepartment()
+  },
+  methods: {
+    async getDepartment() {
+      let result = await getDepartment()
+      this.company = { name: result.companyName, manager: '负责人' }
+      this.departs = tranListToTreeData(result.depts, '') //需要将其转化为树形结构
+      console.log(departs);
+      
     }
   }
 }
