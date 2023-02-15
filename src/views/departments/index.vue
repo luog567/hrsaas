@@ -3,74 +3,13 @@
     <div class="app-container">
       <!-- 组织架构内容-头部 -->
       <el-card class="tree-card">
-        <!-- 放置结构内容 -->
-        <el-row type="flex" justify="space-between" align="middle" style="height:40px">
-          <!-- 左侧内容 -->
-          <el-col>
-            <span>江苏传智播客教育科技股份有限公司</span>
-          </el-col>
-          <!-- 右侧内容 -->
-          <el-col :span="4">
-            <el-row type="flex" justify="end">
-              <el-col>负责人</el-col>
-              <el-col>
-                <!-- 下拉菜单 -->
-                <el-dropdown>
-                  <!-- 内容 -->
-                  <span>
-                    操作
-                    <i class="el-icon-arrow-down"></i>
-                  </span>
-                  <!-- 具名插槽 -->
-                  <el-dropdown-menu slot="dropdown">
-                    <!-- 下拉选项 -->
-                    <el-dropdown-item>添加子部门</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
+        <TreeTools :treeNode='company' :isRoot="true"/>
         <!-- 放置一个el-tree -->
         <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
-         <!-- 传入内容  插槽内容 会循环多次  有多少节点 就循环多少次 -->
-         <!-- 作用域插槽 slot-scope="obj" 接收传递给插槽的数据 -->
+          <!-- 传入内容  插槽内容 会循环多次  有多少节点 就循环多少次 -->
+          <!-- 作用域插槽 slot-scope="obj" 接收传递给插槽的数据 -->
           <!-- 放置结构内容  -->
-          <el-row
-            slot-scope="{data}"
-            type="flex"
-            justify="space-between"
-            align="middle"
-            style="height:40px; width:100%"
-          >
-            <!-- 左侧内容 -->
-            <el-col>
-              <span>{{data.name}}</span>
-            </el-col>
-            <!-- 右侧内容 -->
-            <el-col :span="4">
-              <el-row type="flex" justify="end">
-                <el-col>{{data.manager}}</el-col>
-                <el-col>
-                  <!-- 下拉菜单 -->
-                  <el-dropdown>
-                    <!-- 内容 -->
-                    <span>
-                      操作
-                      <i class="el-icon-arrow-down"></i>
-                    </span>
-                    <!-- 具名插槽 -->
-                    <el-dropdown-menu slot="dropdown">
-                      <!-- 下拉选项 -->
-                      <el-dropdown-item>添加子部门</el-dropdown-item>
-                      <el-dropdown-item>编辑部门</el-dropdown-item>
-                      <el-dropdown-item>删除部门</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
+          <TreeTools slot-scope="{data}" :treeNode="data" />
         </el-tree>
       </el-card>
     </div>
@@ -78,11 +17,19 @@
 </template>
 
 <script>
+import TreeTools from './components/tree-tools'
 export default {
+  components: {
+    TreeTools
+  },
   data() {
     return {
       defaultProps: {
         label: 'name'
+      },
+      company:{
+        name:'江苏传智播客教育科技股份有限公司',
+        manager:'负责人'
       },
       departs: [
         {
