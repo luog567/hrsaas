@@ -11,6 +11,15 @@ export function getDepartments() {
 export let delDepartment = id => {
     return request({
         url: ` /company/department/${id}`,
-        method:'delete'
+        method: 'delete'
+    })
+}
+
+// 新增部门
+export let addDepartment = data => {
+    return request({
+        url: '/company/department',
+        method:'post',
+        data
     })
 }

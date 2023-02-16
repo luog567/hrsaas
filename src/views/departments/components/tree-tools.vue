@@ -55,6 +55,7 @@ export default {
     operateDepts(type) {
       if (type === 'add') {
         // 添加子部门
+        this.$emit('adddept',this.treeNode) //告诉父组件显示dialog
       } else if (type === 'edit') {
         // 编辑部门
       } else if (type === 'add') {
