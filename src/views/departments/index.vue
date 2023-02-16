@@ -9,7 +9,7 @@
           <!-- 传入内容  插槽内容 会循环多次  有多少节点 就循环多少次 -->
           <!-- 作用域插槽 slot-scope="obj" 接收传递给插槽的数据 -->
           <!-- 放置结构内容  -->
-          <TreeTools slot-scope="{data}" :treeNode="data" />
+          <TreeTools slot-scope="{data}" :treeNode="data" @delDepts="getDepartment" />
         </el-tree>
       </el-card>
     </div>
@@ -18,7 +18,7 @@
 
 <script>
 import TreeTools from './components/tree-tools'
-import { getDepartment } from '@/api/departments'
+import { getDepartments } from '@/api/departments'
 import { tranListToTreeData } from '@/utils'
 export default {
   components: {
@@ -38,8 +38,10 @@ export default {
     this.getDepartment()
   },
   methods: {
+    // 获取企业部门
     async getDepartment() {
-      let result = await getDepartment()
+      let result = await getDepartments()
+      console.log(result);
       this.company = { name: result.companyName, manager: '负责人' }
       this.departs = tranListToTreeData(result.depts, '') //需要将其转化为树形结构
       console.log(departs);
